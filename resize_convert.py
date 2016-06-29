@@ -27,8 +27,10 @@ def resize(ims_path):
     Redimensionne puis complète puis enregistre les images. Les images sont
     complétées par des arrays (tobestacked) représeantant des bandes blanches
     """
+    imext = ["jpg", "tif", "png", "JPG", "TIF", "PNG"]
     for filename in os.listdir(ims_path):
-        if filename.endswith(".JPG") or filename.endswith(".jpg"):
+#        if filename.endswith(".JPG") or filename.endswith(".jpg"):
+        if len(filename.split('.')) >= 2 and filename.split('.')[1] in imext:
             # NOTATION GRAPHIQUE (largeur, hauteur)
             dim_req = (1920, 1280)
             img_pil = Image.open(filename)
