@@ -87,3 +87,9 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# Images
+*.bmp
+*.JPG
+*.jpg
+*.png
