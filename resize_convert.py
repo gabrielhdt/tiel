@@ -39,11 +39,13 @@ def resize(ims_path):
             diff_dim = (abs(img_pil_arr.shape[0] - dim_req[0]),
                         abs(img_pil_arr.shape[1] - dim_req[1]))
             # On complète
-            if diff_dim[0] == 0:  # Si hauteur bonne // Largeur
+            # Si largeur bonne
+            if diff_dim[0] == 0 and diff_dim[1] != 0:
                 tobestacked = 255*np.ones((dim_req[0], diff_dim[1], 3),
                                           dtype="uint8")
                 img_pil_arr = np.hstack((img_pil_arr, tobestacked)).copy()
-            elif diff_dim[1] == 0:  # Si largeur bonne
+            # Si hauteur bonne
+            elif diff_dim[1] == 0 and diff_dim[0] != 0:
                 tobestacked = 255*np.ones((diff_dim[0], dim_req[1], 3),
                                           dtype="uint8")
                 img_pil_arr = np.vstack((img_pil_arr, tobestacked)).copy()
