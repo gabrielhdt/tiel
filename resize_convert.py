@@ -28,18 +28,18 @@ def resize(ims_path):
     """
     for filename in os.listdir(ims_path):
         if filename.endswith(".JPG"):
-            # Redimnesionnement
-            dim_req = (1080, 1920)  # Hauteur en première coordonnée
+            # NOTATION GRAPHIQUE (largeur, hauteur)
+            dim_req = (1920, 1080)
             img_pil = Image.open(filename)
             img_pil.thumbnail(dim_req)
             img_pil_arr = np.array(img_pil)
-            # L'image est retournée: shape donne (606, 1080, 3)
-            img_pil_arr = np.transpose(img_pil_arr, (1, 0, 2))
+            # NOTATION MATRICIELLE: (ligne, colonne)
+            dim_req = (1080, 1920)
             diff_dim = (abs(img_pil_arr.shape[0] - dim_req[0]),
                         abs(img_pil_arr.shape[1] - dim_req[1]))
+            print diff_dim
             # On complète
-            print("Complétion")
-            if diff_dim[0] == 0:  # Si hauteur bonne
+            if diff_dim[0] == 0:  # Si hauteur bonne // Largeur
                 tobestacked = 255*np.ones((dim_req[0], 1, 3), dtype="uint8")
                 for i in range(diff_dim[1]):
                     img_pil_arr = np.hstack((img_pil_arr, tobestacked)).copy()
@@ -47,7 +47,6 @@ def resize(ims_path):
                 tobestacked = 255*np.ones((1, dim_req[1], 3), dtype="uint8")
                 for i in range(diff_dim[0]):
                     img_pil_arr = np.vstack((img_pil_arr, tobestacked)).copy()
-            print("Fin complétion")
             img_pil = Image.fromarray(img_pil_arr)
             img_pil.save("{}.bmp".format(filename), "bmp")
 
