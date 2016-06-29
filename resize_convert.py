@@ -15,20 +15,20 @@
 
 
 import os
+import sys
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
 from PIL import Image
 
 
-def main():
-    pass
-
-
 def resize(ims_path):
+    """
+    Prend en paramètre une chaine de caractère: le chemin relatif ou absolu du
+    dossier dans lequel sont contenues les images.
+    Redimensionne puis complète puis enregistre les images.
+    """
+    print(ims_path)
     for filename in os.listdir(ims_path):
         if filename.endswith(".JPG"):
-            img = mpimg.imread(filename)
 
             # Redimnesionnement
             dim_req = (1080, 1920)  # Hauteur en première coordonnée
@@ -55,18 +55,20 @@ def resize(ims_path):
             diff_dim = (abs(img_pil_arr.shape[0] - dim_req[0]),
                         abs(img_pil_arr.shape[1] - dim_req[1]))
             # On complète
+            print("Complétion")
             if diff_dim[0] == 0:  # Si hauteur bonne
-                tobestacked = np.zeros((dim_req[0], 1, 3))
+                tobestacked = 255*np.ones((dim_req[0], 1, 3), dtype="uint8")
                 for i in range(diff_dim[1]):
                     img_pil_arr = np.hstack((img_pil_arr, tobestacked)).copy()
             elif diff_dim[1] == 0:  # Si largeur bonne
-                tobestacked = np.zeros((1, dim_req[1], 3))
+                tobestacked = 255*np.ones((1, dim_req[1], 3), dtype="uint8")
                 for i in range(diff_dim[0]):
                     img_pil_arr = np.vstack((img_pil_arr, tobestacked)).copy()
+            print("Fin complétion")
             img_pil = Image.fromarray(img_pil_arr)
-            img_pil.save(filename, "bmp")
+            img_pil.save("{}.bmp".format(filename), "bmp")
 
 
 
 if __name__ == "__main__":
-    main()
+    resize(sys.argv[1])
