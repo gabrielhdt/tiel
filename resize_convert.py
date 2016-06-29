@@ -24,7 +24,8 @@ def resize(ims_path):
     """
     Prend en paramètre une chaine de caractère: le chemin relatif ou absolu du
     dossier dans lequel sont contenues les images.
-    Redimensionne puis complète puis enregistre les images.
+    Redimensionne puis complète puis enregistre les images. Les images sont
+    complétées par des arrays (tobestacked) représeantant des bandes blanches
     """
     for filename in os.listdir(ims_path):
         if filename.endswith(".JPG"):
@@ -37,16 +38,15 @@ def resize(ims_path):
             dim_req = (1080, 1920)
             diff_dim = (abs(img_pil_arr.shape[0] - dim_req[0]),
                         abs(img_pil_arr.shape[1] - dim_req[1]))
-            print diff_dim
             # On complète
             if diff_dim[0] == 0:  # Si hauteur bonne // Largeur
-                tobestacked = 255*np.ones((dim_req[0], 1, 3), dtype="uint8")
-                for i in range(diff_dim[1]):
-                    img_pil_arr = np.hstack((img_pil_arr, tobestacked)).copy()
+                tobestacked = 255*np.ones((dim_req[0], diff_dim[1], 3),
+                                          dtype="uint8")
+                img_pil_arr = np.hstack((img_pil_arr, tobestacked)).copy()
             elif diff_dim[1] == 0:  # Si largeur bonne
-                tobestacked = 255*np.ones((1, dim_req[1], 3), dtype="uint8")
-                for i in range(diff_dim[0]):
-                    img_pil_arr = np.vstack((img_pil_arr, tobestacked)).copy()
+                tobestacked = 255*np.ones((diff_dim[0], dim_req[1], 3),
+                                          dtype="uint8")
+                img_pil_arr = np.vstack((img_pil_arr, tobestacked)).copy()
             img_pil = Image.fromarray(img_pil_arr)
             img_pil.save("{}.bmp".format(filename), "bmp")
 
