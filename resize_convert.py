@@ -48,7 +48,7 @@ def resize(ims_path):
                                           dtype="uint8")
                 img_pil_arr = np.vstack((img_pil_arr, tobestacked)).copy()
             img_pil = Image.fromarray(img_pil_arr)
-            img_pil.save("{}.bmp".format(filename), "bmp")
+            img_pil.save("{}.bmp".format(filename.split('.')[0]), "bmp")
 
 
 if __name__ == "__main__":
