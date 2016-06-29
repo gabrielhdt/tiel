@@ -26,27 +26,10 @@ def resize(ims_path):
     dossier dans lequel sont contenues les images.
     Redimensionne puis complète puis enregistre les images.
     """
-    print(ims_path)
     for filename in os.listdir(ims_path):
         if filename.endswith(".JPG"):
-
             # Redimnesionnement
             dim_req = (1080, 1920)  # Hauteur en première coordonnée
-#            diff_dim = (img.shape[0] - dim_req[0], img.shape[1] - dim_req[1])
-#
-#            # Détermination du côté à redimensionner en premier
-#            car = None
-#            if diff_dim[0] > diff_dim[1]:
-#                car = 0  # 0 pour la hauteur
-#            elif diff_dim[1] > diff_dim[0]:
-#                car = 1  # 1 pour la largeur
-#
-#            # Nouvelle image
-#            ratio = float(diff_dim[1])/float(dif_dim[0])  # Largeur sur hauteur
-#            if car:
-#                dim_prov = (int(dim_req[1]/ratio), dim_req[1]) 
-#            elif not car:
-#                dim_prov = (dim_req[0], int(ratio*dim_req[0]))
             img_pil = Image.open(filename)
             img_pil.thumbnail(dim_req)
             img_pil_arr = np.array(img_pil)
@@ -67,7 +50,6 @@ def resize(ims_path):
             print("Fin complétion")
             img_pil = Image.fromarray(img_pil_arr)
             img_pil.save("{}.bmp".format(filename), "bmp")
-
 
 
 if __name__ == "__main__":
