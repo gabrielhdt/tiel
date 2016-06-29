@@ -28,14 +28,14 @@ def resize(ims_path):
     complétées par des arrays (tobestacked) représeantant des bandes blanches
     """
     for filename in os.listdir(ims_path):
-        if filename.endswith(".JPG"):
+        if filename.endswith(".JPG") or filename.endswith(".jpg"):
             # NOTATION GRAPHIQUE (largeur, hauteur)
-            dim_req = (1920, 1080)
+            dim_req = (1920, 1280)
             img_pil = Image.open(filename)
             img_pil.thumbnail(dim_req)
             img_pil_arr = np.array(img_pil)
             # NOTATION MATRICIELLE: (ligne, colonne)
-            dim_req = (1080, 1920)
+            dim_req = (1280, 1920)
             diff_dim = (abs(img_pil_arr.shape[0] - dim_req[0]),
                         abs(img_pil_arr.shape[1] - dim_req[1]))
             # On complète
