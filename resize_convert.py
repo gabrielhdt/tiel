@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- encoding: utf-8 -*-
+#    Copyright 2016 Gabriel Hondet
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation, either version 3 of the License, or
@@ -61,4 +62,7 @@ def process_im(filename):
 
 
 if __name__ == "__main__":
-    looponfiles()
+    if len(sys.argv) <= 1 or sys.argv[1] == "-h":
+        print("Mettre les chemins des images à traiter en argument")
+    else:
+        looponfiles()
