@@ -19,39 +19,46 @@ import numpy as np
 from PIL import Image
 
 
-def resize(ims_path):
+def looponfiles():
     """
-    Prend en paramètre une chaine de caractère: le chemin relatif ou absolu du
-    dossier dans lequel sont contenues les images.
+    Prend en paramètre les arguments passés en ligne de commande (fichiers à
+    traiter) et lance la fonction de traitement
+    """
+    imext = ["jpg", "tif", "png", "JPG", "TIF", "PNG"]
+    for filename in sys.argv[1:]:
+        if len(filename.split('.')) >= 2 and filename.split('.')[1] in imext:
+            process_im(filename)
+
+
+def process_im(filename):
+    """
+    Prend en paramètre une chaine de caractère: le nom du fichier à traiter
     Redimensionne puis complète puis enregistre les images. Les images sont
     complétées par des arrays (tobestacked) représeantant des bandes blanches
     """
-    imext = ["jpg", "tif", "png", "JPG", "TIF", "PNG"]
-    for filename in ims_path[1:]:
-        if len(filename.split('.')) >= 2 and filename.split('.')[1] in imext:
-            # NOTATION GRAPHIQUE (largeur, hauteur)
-            dim_req = (1920, 1280)
-            img_pil = Image.open(filename)
-            img_pil.thumbnail(dim_req)
-            img_pil_arr = np.array(img_pil)
-            # NOTATION MATRICIELLE: (ligne, colonne)
-            dim_req = (1280, 1920)
-            diff_dim = (abs(img_pil_arr.shape[0] - dim_req[0]),
-                        abs(img_pil_arr.shape[1] - dim_req[1]))
-            # On complète
-            # Si largeur bonne
-            if diff_dim[0] == 0 and diff_dim[1] != 0:
-                tobestacked = 255*np.ones((dim_req[0], diff_dim[1], 3),
-                                          dtype="uint8")
-                img_pil_arr = np.hstack((img_pil_arr, tobestacked)).copy()
-            # Si hauteur bonne
-            elif diff_dim[1] == 0 and diff_dim[0] != 0:
-                tobestacked = 255*np.ones((diff_dim[0], dim_req[1], 3),
-                                          dtype="uint8")
-                img_pil_arr = np.vstack((img_pil_arr, tobestacked)).copy()
-            img_pil = Image.fromarray(img_pil_arr)
-            img_pil.save("{}.bmp".format(filename.split('.')[0]), "bmp")
+    # NOTATION GRAPHIQUE (largeur, hauteur)
+    dim_req = (1920, 1280)
+    img_pil = Image.open(filename)
+    img_pil.thumbnail(dim_req)
+    img_pil_arr = np.array(img_pil)
+    # NOTATION MATRICIELLE: (ligne, colonne)
+    dim_req = (1280, 1920)
+    diff_dim = (abs(img_pil_arr.shape[0] - dim_req[0]),
+                abs(img_pil_arr.shape[1] - dim_req[1]))
+    # On complète
+    # Si largeur bonne
+    if diff_dim[0] == 0 and diff_dim[1] != 0:
+        tobestacked = 255*np.ones((dim_req[0], diff_dim[1], 3),
+                                  dtype="uint8")
+        img_pil_arr = np.hstack((img_pil_arr, tobestacked)).copy()
+    # Si hauteur bonne
+    elif diff_dim[1] == 0 and diff_dim[0] != 0:
+        tobestacked = 255*np.ones((diff_dim[0], dim_req[1], 3),
+                                  dtype="uint8")
+        img_pil_arr = np.vstack((img_pil_arr, tobestacked)).copy()
+    img_pil = Image.fromarray(img_pil_arr)
+    img_pil.save("{}.bmp".format(filename.split('.')[0]), "bmp")
 
 
 if __name__ == "__main__":
-    resize(sys.argv)
+    looponfiles()
