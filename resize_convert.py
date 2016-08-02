@@ -16,6 +16,7 @@
 
 
 import sys
+import argparse
 import numpy as np
 from PIL import Image
 
@@ -62,7 +63,7 @@ def process_im(filename):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) <= 1 or sys.argv[1] == "-h":
-        print("Mettre les chemins des images à traiter en argument")
-    else:
-        looponfiles()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("filename", help="Nom des images à traiter", nargs='+')
+    parser.parse_args()
+    looponfiles()
