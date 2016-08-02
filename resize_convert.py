@@ -14,7 +14,6 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-import os
 import sys
 import numpy as np
 from PIL import Image
@@ -28,8 +27,7 @@ def resize(ims_path):
     complétées par des arrays (tobestacked) représeantant des bandes blanches
     """
     imext = ["jpg", "tif", "png", "JPG", "TIF", "PNG"]
-    for filename in os.listdir(ims_path):
-#        if filename.endswith(".JPG") or filename.endswith(".jpg"):
+    for filename in ims_path[1:]:
         if len(filename.split('.')) >= 2 and filename.split('.')[1] in imext:
             # NOTATION GRAPHIQUE (largeur, hauteur)
             dim_req = (1920, 1280)
@@ -56,4 +54,4 @@ def resize(ims_path):
 
 
 if __name__ == "__main__":
-    resize(sys.argv[1])
+    resize(sys.argv)
