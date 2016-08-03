@@ -59,7 +59,7 @@ def process_im(filename):
                                   dtype="uint8")
         img_pil_arr = np.vstack((img_pil_arr, tobestacked)).copy()
     img_pil = Image.fromarray(img_pil_arr)
-    img_pil.save("{}.bmp".format(filename.split('.')[0]), "bmp")
+    img_pil.save("pcd_{}.bmp".format(filename.split('.')[0]), "bmp")
 
 
 if __name__ == "__main__":
